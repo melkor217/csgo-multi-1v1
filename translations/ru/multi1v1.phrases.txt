@@ -6,7 +6,7 @@
 	}
 	"NoOpponentHint"
 	{
-		"ru"		"<font size='22' color='#FF0000'>У вас нет противника.</font>"
+		"ru"		"У вас нет противника."
 	}
 	"FacingOff"
 	{
@@ -42,7 +42,7 @@
 	}
 	"OpponentLeftHint"
 	{
-		"ru"		"<font size='22' color='#00FF00'>Ваш противник вышел.</font>"
+		"ru"		"Ваш противник вышел."
 	}
 	"HideStats"
 	{

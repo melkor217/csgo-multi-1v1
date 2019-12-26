@@ -7,7 +7,7 @@
 	}
 	"NoOpponentHint"
 	{
-		"tr"		"<font size='22' color='#FF0000'>Karşınızda rakip yok.</font>"
+		"tr"		"Karşınızda rakip yok."
 	}
 	"FacingOff"
 	{
@@ -49,7 +49,7 @@
 	}
 	"OpponentLeftHint"
 	{
-		"tr"		"<font size='22' color='#00FF00'>Rakibiniz ayrıldı.</font>"
+		"tr"		"Rakibiniz ayrıldı."
 	}
 	"HideStats"
 	{

@@ -6,7 +6,7 @@
 	}
 	"NoOpponentHint"
 	{
-		"pt"		"<font size='22' color='#FF0000'>Você não tem oponente</font>"
+		"pt"		"Você não tem oponente"
 	}
 	"FacingOff"
 	{
@@ -42,7 +42,7 @@
 	}
 	"OpponentLeftHint"
 	{
-		"pt"		"<font size='22' color='#00FF00'>Seu oponente saiu.</font>"
+		"pt"		"Seu oponente saiu."
 	}
 	"HideStats"
 	{
