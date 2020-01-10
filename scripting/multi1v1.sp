@@ -1336,7 +1336,7 @@ static int SetBotQuota() {
       }
     }
   }
-  if (count % 2 || !count) {
+  if (count <= 3 && (count % 2 || !count)) {
     ServerCommand("bot_quota 1");
     LogError("Add bot!");
   }
