@@ -56,7 +56,7 @@ public void SQLErrorCheckCallback(Handle owner, Handle hndl, const char[] error,
  * Adds a player, updating their name if they already exist, to the database.
  */
 public void DB_AddPlayer(int client) {
-  if (db != INVALID_HANDLE && IsHumanConnected(client)) {
+  if (db != INVALID_HANDLE && IsConnected(client)) {
     int id = GetSteamAccountID(client);
     if (id == 0) {
       LogMessage("Failed GetSteamAccountID for client %L", client);
@@ -92,7 +92,7 @@ public void Callback_Insert(Handle owner, Handle hndl, const char[] error, int s
     LogError("Callback_Insert SQL Error: %s", error);
   } else {
     int client = GetClientFromSerial(serial);
-    if (!IsHumanConnected(client))
+    if (!IsConnected(client))
       return;
 
     int id = GetSteamAccountID(client);
@@ -128,7 +128,7 @@ public void Callback_Insert(Handle owner, Handle hndl, const char[] error, int s
  */
 public void DB_FetchRatings(int client) {
   g_FetchedPlayerInfo[client] = false;
-  if (db != INVALID_HANDLE && IsHumanConnected(client)) {
+  if (db != INVALID_HANDLE && IsConnected(client)) {
     int id = GetSteamAccountID(client);
     if (id != 0) {
       int serverID = g_DatabaseServerIdCvar.IntValue;
@@ -157,7 +157,7 @@ public void DB_FetchRatings(int client) {
 
 public void Callback_FetchRating(Handle owner, Handle hndl, const char[] error, int serial) {
   int client = GetClientFromSerial(serial);
-  if (!IsHumanConnected(client) || g_FetchedPlayerInfo[client])
+  if (!IsConnected(client) || g_FetchedPlayerInfo[client])
     return;
 
   g_FetchedPlayerInfo[client] = false;
@@ -189,7 +189,7 @@ public void Callback_FetchRating(Handle owner, Handle hndl, const char[] error, 
  * Writes the rating for a player, if the rating is valid, back to the database.
  */
 public void DB_WriteRatings(int client) {
-  if (g_FetchedPlayerInfo[client] && IsHumanPlayer(client)) {
+  if (g_FetchedPlayerInfo[client] && IsPlayer(client)) {
     int serverID = g_DatabaseServerIdCvar.IntValue;
 
     char roundTypeRatings[1024] = "";
@@ -217,7 +217,7 @@ public void DB_WriteRatings(int client) {
  * a winner/loser pair.
  */
 public void DB_RoundUpdate(int winner, int loser, bool forceLoss) {
-  if (IsHumanPlayer(winner) && IsHumanPlayer(loser) && g_UseDatabaseCvar.IntValue != 0) {
+  if (IsPlayer(winner) && IsPlayer(loser) && g_UseDatabaseCvar.IntValue != 0) {
     // TODO: this is a temporary band-aid for the first round ending
     //  too early sometimes and unfairly punishes early connectors
     if (forceLoss && g_totalRounds <= 3) {
@@ -250,7 +250,7 @@ public void DB_RoundUpdate(int winner, int loser, bool forceLoss) {
  * Increments a named field in the database.
  */
 public void Increment(int client, const char[] field) {
-  if (db != INVALID_HANDLE && IsHumanPlayer(client)) {
+  if (db != INVALID_HANDLE && IsPlayer(client)) {
     int id = GetSteamAccountID(client);
     if (id >= 1) {
       int serverid = g_DatabaseServerIdCvar.IntValue;

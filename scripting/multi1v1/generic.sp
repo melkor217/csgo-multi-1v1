@@ -24,25 +24,14 @@ stock bool IsValidClient(int client) {
 }
 
 stock bool IsConnected(int client) {
-  // return client > 0 && client <= MaxClients && IsClientConnected(client) && !IsFakeClient(client);
-  return client > 0 && client <= MaxClients && IsClientConnected(client);
+  return client > 0 && client <= MaxClients && IsClientConnected(client) && !IsFakeClient(client);
 }
 
-stock bool IsHumanConnected(int client) {
-    return IsConnected(client) && !IsFakeClient(client);
-}
-
+/**
+ * Returns if a player is on an active/player team.
+ */
 stock bool IsPlayer(int client) {
-    return IsValidClient(client) && !IsClientSourceTV(client);
-    // return IsValidClient(client) && !IsFakeClient(client);
-}
-
-stock bool IsBotPlayer(int client) {
-    return IsPlayer(client) && IsFakeClient(client);
-}
-
-stock bool IsHumanPlayer(int client) {
-    return IsPlayer(client) && !IsFakeClient(client);
+  return IsValidClient(client) && !IsFakeClient(client);
 }
 
 /**
