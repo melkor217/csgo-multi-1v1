@@ -468,6 +468,14 @@ public void OnClientAuthorized(int client, const char[] auth) {
   }
 }
 
+public void OnClientPutInServer(int client) {
+    if (IsBotPlayer(client)) {
+        //ChangeClientTeam(client, CS_TEAM_T);
+        //ChangeClientTeam(client, CS_TEAM_SPECTATOR);
+        Queue_Enqueue(g_waitingQueue, client);
+    }
+}
+
 public void OnClientConnected(int client) {
   ResetClientVariables(client);
 }
@@ -527,6 +535,7 @@ public Action Event_OnPlayerTeam(Event event, const char[] name, bool dontBroadc
 public Action Event_OnRoundPreStart(Event event, const char[] name, bool dontBroadcast) {
   if (!g_Enabled)
     return;
+  SetBotQuota();
 
   // Randomize arena orders if enabled.
   if (g_RandomizeArenaOrderCvar.IntValue != 0) {
@@ -915,6 +924,8 @@ public Action Event_OnPlayerSpawn(Event event, const char[] name, bool dontBroad
   int client = GetClientOfUserId(event.GetInt("userid"));
   if (!IsActivePlayer(client))
     return;
+  if (IsBotPlayer(client))
+    return;
 
   int arena = g_Ranking[client];
 
@@ -934,7 +945,6 @@ public Action Event_OnPlayerSpawn(Event event, const char[] name, bool dontBroad
 public Action Event_MatchOver(Event event, const char[] name, bool dontBroadcast) {
   if (!g_Enabled)
     return;
-
   int maxClient = -1;
   int maxScore = -1;
   for (int i = 1; i <= MaxClients; i++) {
@@ -1098,6 +1108,8 @@ public void SwitchPlayerTeam(int client, int team) {
   int previousTeam = GetClientTeam(client);
   if (previousTeam == team)
     return;
+  //if (IsBotPlayer(client))
+  //  return;
 
   g_PluginTeamSwitch[client] = true;
   if (team > CS_TEAM_SPECTATOR) {
@@ -1312,4 +1324,25 @@ public Action Timer_UpdateAutoSpecTargets(Handle timer) {
   }
 
   return Plugin_Continue;
+}
+
+static int SetBotQuota() {
+  int count = 0;
+  for (int i = 1; i <= MaxClients; i++) {
+    if (IsPlayer(i) && IsHumanConnected(i)) {
+      int team = GetClientTeam(i);
+      if (team == CS_TEAM_T || team == CS_TEAM_CT) {
+        count++;
+      }
+    }
+  }
+  if (count % 2 || !count) {
+    ServerCommand("bot_quota 1");
+    LogError("Add bot!");
+  }
+  else {
+    ServerCommand("bot_quota 0");
+    LogError("Kick bot!");
+  }
+  return count;
 }
