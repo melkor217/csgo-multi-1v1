@@ -449,6 +449,11 @@ public int Native_PlayerAllowsRoundType(Handle plugin, int numParams) {
   int roundType = GetNativeCell(2);
   CHECK_ROUNDTYPE(roundType);
 
+  if(IsBotPlayer(client)) {
+    // Bots play everything
+    return 1;
+  }
+
   return g_RoundTypeOptional[roundType] || g_AllowedRoundTypes[client][roundType];
 }
 
