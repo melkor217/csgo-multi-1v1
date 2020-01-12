@@ -76,7 +76,13 @@ static void AddRounds(ArrayList types, int client1, int client2, int roundType) 
 }
 
 static void AddRounds_CheckAllowed(ArrayList types, int client1, int client2, int roundType) {
-  if (g_AllowedRoundTypes[client1][roundType] && g_AllowedRoundTypes[client2][roundType]) {
+  if (g_AllowedRoundTypes[client1][roundType] || IsBotPlayer(client2)) {
+    AddRounds(types, client1, client2, roundType);
+  }
+  else if (g_AllowedRoundTypes[client2][roundType] || IsBotPlayer(client1)) {
+    AddRounds(types, client1, client2, roundType);
+  }
+  else if (g_AllowedRoundTypes[client1][roundType] && g_AllowedRoundTypes[client2][roundType]) {
     AddRounds(types, client1, client2, roundType);
   }
 }
