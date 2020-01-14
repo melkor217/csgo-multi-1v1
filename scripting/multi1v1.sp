@@ -71,6 +71,7 @@ ConVar g_BotQuotaCvar;
 bool g_FetchedPlayerInfo[MAXPLAYERS + 1];
 int g_Wins[MAXPLAYERS + 1];
 int g_Losses[MAXPLAYERS + 1];
+int bot_count = 0;
 float g_Rating[MAXPLAYERS + 1];
 float g_RoundTypeRating[MAXPLAYERS + 1][MAX_ROUND_TYPES];
 
@@ -1343,6 +1344,10 @@ static int SetBotQuota() {
   }
   if (count <= 3 && (count % 2 || !count)) {
     ServerCommand("bot_quota %i", g_BotQuotaCvar.IntValue);
+    if(gBotQuotaCvar.IntValue != bot_count) {
+      ServerCommand("bot_kill");
+    }
+    bot_count = g_BotQuotaCvar.IntValue;
     LogError("Add bot!");
   }
   else {
