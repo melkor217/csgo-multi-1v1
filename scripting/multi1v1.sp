@@ -1344,7 +1344,7 @@ static int SetBotQuota() {
   }
   if (count <= 3 && (count % 2 || !count)) {
     ServerCommand("bot_quota %i", g_BotQuotaCvar.IntValue);
-    if(gBotQuotaCvar.IntValue != bot_count) {
+    if(g_BotQuotaCvar.IntValue != bot_count) {
       ServerCommand("bot_kill");
     }
     bot_count = g_BotQuotaCvar.IntValue;
