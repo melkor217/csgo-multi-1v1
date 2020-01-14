@@ -62,6 +62,7 @@ ConVar g_UseMVPStarsCvar;
 ConVar g_UseTeamTagsCvar;
 ConVar g_VerboseSpawnModeCvar;
 ConVar g_VersionCvar;
+ConVar g_BotQuotaCvar;
 
 /** Saved data for database interaction - be careful when using these, they may not
  *  be fetched, check multi1v1/stats.sp for a function that checks that instead of
@@ -278,6 +279,10 @@ public void OnPluginStart() {
   g_VerboseSpawnModeCvar = CreateConVar(
       "sm_multi1v1_verbose_spawns", "0",
       "Set to 1 to get info about all spawns the plugin read - useful for map creators testing against the plugin");
+
+  g_BotQuotaCvar =
+      CreateConVar("sm_multi1v1_bot_quota", "1",
+                   "Bot Quota");
 
   HookConVarChange(g_EnabledCvar, EnabledChanged);
 
@@ -1337,7 +1342,7 @@ static int SetBotQuota() {
     }
   }
   if (count <= 3 && (count % 2 || !count)) {
-    ServerCommand("bot_quota 1");
+    ServerCommand("bot_quota %i", g_BotQuotaCvar.IntValue);
     LogError("Add bot!");
   }
   else {
