@@ -1345,7 +1345,10 @@ static int SetBotQuota() {
   if (count <= 3 && (count % 2 || !count)) {
     ServerCommand("bot_quota %i", g_BotQuotaCvar.IntValue);
     if(g_BotQuotaCvar.IntValue != bot_count) {
-      ServerCommand("bot_kill");
+      for (int i = 0; i <= MaxClients; i++) {
+        if(IsValidClient(i) && IsPlayerAlive(i) && IsBotPlayer(i))
+            ForcePlayerSuicide(i);
+      }
     }
     bot_count = g_BotQuotaCvar.IntValue;
     LogError("Add bot!");
