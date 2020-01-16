@@ -1344,17 +1344,18 @@ static int SetBotQuota() {
   }
   if (count <= 3 && (count % 2 || !count)) {
     ServerCommand("bot_quota %i", g_BotQuotaCvar.IntValue);
-    /* if(g_BotQuotaCvar.IntValue != bot_count) { */
-    /*   for (int i = 0; i <= MaxClients; i++) { */
-    /*     if(IsValidClient(i) && IsPlayerAlive(i) && IsBotPlayer(i)) */
-    /*         ForcePlayerSuicide(i); */
-    /*   } */
-    /* } */
+    if(g_BotQuotaCvar.IntValue != bot_count) {
+      for (int i = 0; i <= MaxClients; i++) {
+        if(IsValidClient(i) && IsPlayerAlive(i) && IsBotPlayer(i))
+            ForcePlayerSuicide(i);
+      }
+    }
     bot_count = g_BotQuotaCvar.IntValue;
     LogError("Add bot!");
   }
   else {
     ServerCommand("bot_quota 0");
+    bot_count = 0;
     LogError("Kick bot!");
   }
   return count;
